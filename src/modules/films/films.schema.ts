@@ -21,7 +21,7 @@ export class Films {
   @Prop({ required: true })
   producer: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Date })
   release_date: Date;
 
   @Prop([String]) 
