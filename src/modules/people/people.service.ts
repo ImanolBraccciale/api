@@ -15,6 +15,9 @@ export class PeopleService {
 
   async findAll(filters: any): Promise<People[]> {
      const query = filters ? new PeopleFilterBuilder().build()(filters) : {};
+     if (filters?.name) {
+       query.name = { $regex: new RegExp(filters.name, 'i') }; 
+  }
     return this.peopleModel.find(query).exec();
   }
 }

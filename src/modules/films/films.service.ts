@@ -14,6 +14,9 @@ export class FilmsService {
 
     async findAll(filters?: any): Promise<Films[]> {
         const query = filters ? new FilmsFilterBuilder().build()(filters) : {};
+        if (filters?.title) {
+            query.title = { $regex: new RegExp(filters.title, 'i') };
+          }
         return this.filmsModel.find(query).exec();
     }
 

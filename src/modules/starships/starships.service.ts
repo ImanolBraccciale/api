@@ -14,6 +14,9 @@ export class StarshipsService {
   }
    async findAll(filters?: any): Promise<Starships[]> {
     const query = filters ? new StarshipsFilterBuilder().build()(filters) : {};
+    if (filters?.name) {
+      query.name = { $regex: new RegExp(filters.name, 'i') };
+    }
     return this.starshipsModel.find(query).exec();
   }
 }

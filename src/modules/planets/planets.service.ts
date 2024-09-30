@@ -14,6 +14,9 @@ export class PlanetsService {
   
     async findAll(filters?: any): Promise<Planets[]> {
       const query = filters ? new PlanetsFilterBuilder().build()(filters) : {};
+      if (filters?.name) {
+        query.name = { $regex: new RegExp(filters.name, 'i') };
+      }
       return this.planetsModel.find(query).exec();
   }
   }

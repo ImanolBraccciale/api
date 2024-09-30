@@ -16,7 +16,6 @@ export class SyncService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    // Llama a todas las funciones cuando la aplicación inicie
     await this.fetchAndStoreFilms();
     await this.fetchAndStorePeople();
     await this.fetchAndStoreStarships();
@@ -33,11 +32,15 @@ export class SyncService implements OnModuleInit {
 
   private async fetchAndStoreFilms() {
     try {
-      const response = await axios.get('https://swapi.dev/api/films/');
-      const films = response.data.results;
+      let url = 'https://swapi.dev/api/films/';
+      while (url) {
+        const response = await axios.get(url);
+        const films = response.data.results;
 
-      for (const film of films) {
-        await this.filmsService.create(film); 
+        for (const film of films) {
+          await this.filmsService.create(film); 
+        }
+        url = response.data.next;  
       }
     } catch (error) {
       console.error('Error al obtener películas:', error);
@@ -46,11 +49,15 @@ export class SyncService implements OnModuleInit {
 
   private async fetchAndStorePeople() {
     try {
-      const response = await axios.get('https://swapi.dev/api/people/');
-      const people = response.data.results;
+      let url = 'https://swapi.dev/api/people/';
+      while (url) {
+        const response = await axios.get(url);
+        const people = response.data.results;
 
-      for (const person of people) {
-        await this.peopleService.create(person); 
+        for (const person of people) {
+          await this.peopleService.create(person); 
+        }
+        url = response.data.next;  
       }
     } catch (error) {
       console.error('Error al obtener personas:', error);
@@ -59,11 +66,15 @@ export class SyncService implements OnModuleInit {
 
   private async fetchAndStoreStarships() {
     try {
-      const response = await axios.get('https://swapi.dev/api/starships/');
-      const starships = response.data.results;
+      let url = 'https://swapi.dev/api/starships/';
+      while (url) {
+        const response = await axios.get(url);
+        const starships = response.data.results;
 
-      for (const starship of starships) {
-        await this.starshipsService.create(starship); 
+        for (const starship of starships) {
+          await this.starshipsService.create(starship); 
+        }
+        url = response.data.next;  
       }
     } catch (error) {
       console.error('Error al obtener naves estelares:', error);
@@ -72,11 +83,15 @@ export class SyncService implements OnModuleInit {
 
   private async fetchAndStorePlanets() {
     try {
-      const response = await axios.get('https://swapi.dev/api/planets/');
-      const planets = response.data.results;
+      let url = 'https://swapi.dev/api/planets/';
+      while (url) {
+        const response = await axios.get(url);
+        const planets = response.data.results;
 
-      for (const planet of planets) {
-        await this.planetsService.create(planet); 
+        for (const planet of planets) {
+          await this.planetsService.create(planet); 
+        }
+        url = response.data.next; 
       }
     } catch (error) {
       console.error('Error al obtener planetas:', error);
